@@ -12,14 +12,14 @@ import org.apache.flink.api.java.typeutils.RowTypeInfo
 import org.apache.flink.shaded.guava18.com.google.common.collect.Lists
 import org.apache.flink.table.functions.{AsyncTableFunction, FunctionContext}
 import org.apache.flink.types.Row
+import org.rabbit.config.DevDbConfig
+
 import scala.collection.JavaConversions._
 
 class MysqlAsyncLookupFunction(tableName: String,
                                fieldTypes: Array[TypeInformation[_]],
                                fieldNames: Array[String],
                                connectionField: Array[String]) extends AsyncTableFunction[Row] {
-  val MYSQL_DRIVER = "com.mysql.jdbc.Driver"
-  val URL = "jdbc:mysql://127.0.0.1:3306/dashboard?charset=utf8"
 
   var jdbcClient: JDBCClient = _
 
@@ -115,10 +115,10 @@ class MysqlAsyncLookupFunction(tableName: String,
   override def open(context: FunctionContext): Unit = {
     // 使用vertx来实现异步jdbc查询
     val mysqlClientConfig = new JsonObject()
-    mysqlClientConfig.put("url", URL)
-      .put("driver_class", MYSQL_DRIVER)
-      .put("user", "root")
-      .put("password", "123456");
+    mysqlClientConfig.put("url", DevDbConfig.url)
+      .put("driver_class", DevDbConfig.driver)
+      .put("user", DevDbConfig.user)
+      .put("password", DevDbConfig.password)
     System.setProperty("vertx.disableFileCPResolving", "true")
 
     val vo = new VertxOptions();

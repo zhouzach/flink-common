@@ -3,15 +3,16 @@
 //import org.apache.flink.api.common.typeinfo.{BasicTypeInfo, TypeInformation, Types}
 //import org.apache.flink.api.java.io.jdbc.JDBCAppendTableSink
 //import org.apache.flink.table.api.{EnvironmentSettings, TableEnvironment}
+//import org.apache.flink.connector.hbase.sink.
 //
-//object FromKafkaSinkJdbcByJDBCAppendTableSink {
+//object FromKafkaSinkHbaseByHBaseSinkFunction {
 //
 //  def main(args: Array[String]): Unit = {
 //
 //    val settings = EnvironmentSettings.newInstance().useBlinkPlanner().inStreamingMode().build()
 //    val tableEnv = TableEnvironment.create(settings)
 //
-//    tableEnv.executeSql(
+//    tableEnv.sqlUpdate(
 //      """
 //        |
 //        |CREATE TABLE user_behavior (
@@ -33,6 +34,7 @@
 //        |    'format.derive-schema' = 'true'
 //        |)
 //        |""".stripMargin)
+//
 //
 //
 //    val sink: JDBCAppendTableSink = JDBCAppendTableSink.builder()
@@ -58,6 +60,10 @@
 //
 //    tableEnv.sqlQuery("select uid, cast(`time` as string),phoneType,clickCount from user_behavior")
 //      .insertInto("jdbcOutputTable")
+//
+//
+//
+//
 //
 //    tableEnv.execute("from kafka sink mysql")
 //  }

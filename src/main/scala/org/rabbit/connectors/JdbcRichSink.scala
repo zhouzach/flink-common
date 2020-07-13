@@ -1,6 +1,6 @@
 package org.rabbit.connectors
 
-import java.sql.{Connection, DriverManager, PreparedStatement}
+import java.sql.{Connection, DriverManager, PreparedStatement, SQLException}
 
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction
@@ -18,11 +18,22 @@ abstract class JdbcRichSink[IN](deploy: String, sql: String) extends RichSinkFun
     //    super.open(parameters)
 
     deploy match {
+
       case "dev" =>
-        conn = DriverManager.getConnection(DevDbConfig.url, DevDbConfig.pop)
+        try {
+          conn = DriverManager.getConnection(DevDbConfig.url, DevDbConfig.pop)
+        } catch {
+          case exception: SQLException =>
+            println(exception)
+        }
 
       case "prod" =>
-        conn = DriverManager.getConnection(ProdDbConfig.url, ProdDbConfig.pop)
+        try {
+          conn = DriverManager.getConnection(ProdDbConfig.url, ProdDbConfig.pop)
+        } catch {
+          case exception: SQLException =>
+            println(exception)
+        }
     }
 
     stmt = conn.prepareStatement(sql)

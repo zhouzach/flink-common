@@ -1,10 +1,10 @@
 package org.rabbit.sql
 
-import org.apache.flink.api.common.time.Time
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
+import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.table.api.EnvironmentSettings
-import org.apache.flink.table.api.java.StreamTableEnvironment
+import org.apache.flink.table.api.bridge.scala.StreamTableEnvironment
+import org.rabbit.config.DevDbConfig
 
 
 /**
@@ -30,7 +30,7 @@ object FromKafkaSinkJdbcForUserUV {
 //    configuration.setString("table.exec.mini-batch.allow-latency", "5 s")
 //    configuration.setString("table.exec.mini-batch.size", "5000")
 
-    streamTableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
         |
         |CREATE TABLE `user` (
@@ -55,7 +55,7 @@ object FromKafkaSinkJdbcForUserUV {
         |""".stripMargin)
 
 
-    streamTableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
         |
         |CREATE table user_view(
@@ -74,7 +74,7 @@ object FromKafkaSinkJdbcForUserUV {
         |)
         |""".stripMargin)
 
-    streamTableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
         |
         |
@@ -90,23 +90,23 @@ object FromKafkaSinkJdbcForUserUV {
 
 
 
-    streamTableEnv.sqlUpdate(
-      """
+    streamTableEnv.executeSql(
+      s"""
         |
         |CREATE TABLE user_uv1(
         |    `time` VARCHAR,
         |    cnt bigint
         |) WITH (
         |    'connector.type' = 'jdbc',
-        |    'connector.url' = 'jdbc:mysql://172.19.245.111:3306/report',
+        |    'connector.url' = '${DevDbConfig.url}',
         |    'connector.table' = 'user_uv1',
-        |    'connector.username' = 'root',
-        |    'connector.password' = 'banban123456',
+        |    'connector.username' = '${DevDbConfig.user}',
+        |    'connector.password' = '${DevDbConfig.password}',
         |    'connector.write.flush.max-rows' = '1'
         |)
         |""".stripMargin)
 
-    streamTableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
         |
         |INSERT INTO user_uv1
@@ -121,7 +121,7 @@ object FromKafkaSinkJdbcForUserUV {
 
 
 
-    streamTableEnv.execute("from kafka sink mysql")
+//    streamTableEnv.execute("from kafka sink mysql")
   }
 
 }

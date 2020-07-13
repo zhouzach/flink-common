@@ -1,10 +1,9 @@
 package org.rabbit.sql
 
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
-import org.apache.flink.table.api.scala.StreamTableEnvironment
-
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.table.api.EnvironmentSettings
+import org.apache.flink.table.api.bridge.scala.StreamTableEnvironment
 
 object FromKafkaSinkHbase {
 
@@ -19,7 +18,7 @@ object FromKafkaSinkHbase {
     val streamTableEnv = StreamTableEnvironment.create(streamExecutionEnv, blinkEnvSettings)
 
 
-    streamTableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
         |
         |CREATE TABLE `user` (
@@ -45,16 +44,16 @@ object FromKafkaSinkHbase {
 
 
 
-    streamTableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
         |
-        |CREATE TABLE user_hbase1(
-        |    rowkey BIGINT,
+        |CREATE TABLE hbase_table (
+        |    rowkey VARCHAR,
         |    cf ROW(sex VARCHAR, age INT, created_time VARCHAR)
         |) WITH (
         |    'connector.type' = 'hbase',
         |    'connector.version' = '2.1.0',
-        |    'connector.table-name' = 'ods.user_hbase1',
+        |    'connector.table-name' = 'ods:user_hbase2',
         |    'connector.zookeeper.quorum' = 'cdh1:2181,cdh2:2181,cdh3:2181',
         |    'connector.zookeeper.znode.parent' = '/hbase',
         |    'connector.write.buffer-flush.max-size' = '10mb',
@@ -63,21 +62,17 @@ object FromKafkaSinkHbase {
         |)
         |""".stripMargin)
 
-    streamTableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
-        |
-        |insert into user_hbase1
-        |SELECT uid,
-        | -- ROW(sex, age, cast(created_time as VARCHAR)) as cf
-        | -- FROM  `user`
-        |
-        |  ROW(sex, age, created_time ) as cf
-        |  FROM  (select uid,sex,age, cast(created_time as VARCHAR) as created_time from `user`)
+        |insert into hbase_table
+        |SELECT
+        |   CONCAT(SUBSTRING(MD5(CAST(uid AS VARCHAR)), 0, 6), cast(CEILING(UNIX_TIMESTAMP(created_time)/60) as string), sex) as uid,
+        |   ROW(sex, age, created_time ) as cf
+        |FROM  (select uid,sex,age, cast(created_time as VARCHAR) as created_time from `user`)
         |
         |""".stripMargin)
 
 
-    streamTableEnv.execute("from kafka sink mysql")
   }
 
 }

@@ -1,18 +1,16 @@
 package org.rabbit.streaming.join
 
-import org.apache.flink.addons.hbase.HBaseTableSource
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
+
+import org.apache.flink.connector.hbase.source.HBaseTableSource
+import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.table.api.EnvironmentSettings
-import org.apache.flink.table.api.java.StreamTableEnvironment
-import org.apache.flink.table.descriptors.HBaseValidator
-import org.apache.flink.types.Row
-import org.apache.hadoop.conf.Configuration
+import org.apache.flink.table.api.bridge.scala.StreamTableEnvironment
 import org.apache.hadoop.hbase.{HBaseConfiguration, HConstants}
 
 /**
  * https://ci.apache.org/projects/flink/flink-docs-stable/dev/table/streaming/temporal_tables.html#defining-temporal-table
  */
-object KafkaJoinHbaseByTemporalTable {
+object KafkaJoinHbaseByTemporalTableSinkHbase {
 
   def main(args: Array[String]): Unit = {
 
@@ -24,14 +22,15 @@ object KafkaJoinHbaseByTemporalTable {
     val hConf = HBaseConfiguration.create()
     hConf.set(HConstants.ZOOKEEPER_QUORUM, "cdh1:2181,cdh2:2181,cdh3:2181")
 
-    val users = new HBaseTableSource(hConf, "user_hbase3")
+    val users = new HBaseTableSource(hConf, "ods.user_join_behavior")
     users.setRowKey("rowkey", classOf[String]) // currency as the primary key
     users.addColumn("cf", "age", classOf[Integer])
+    users.addColumn("cf", "sex", classOf[String])
 
     streamTableEnv.registerTableSource("users", users)
 
 
-    streamTableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
         |
         |CREATE TABLE user_behavior (
@@ -42,8 +41,8 @@ object KafkaJoinHbaseByTemporalTable {
         |) WITH (
         |    'connector.type' = 'kafka',
         |    'connector.version' = 'universal',
-        |    'connector.topic' = 'user_behavior',
-        |    'connector.startup-mode' = 'earliest-offset',
+        |    'connector.topic' = 'user_behavior2',
+        |    'connector.startup-mode' = 'latest-offset',
         |    'connector.properties.0.key' = 'zookeeper.connect',
         |    'connector.properties.0.value' = 'cdh1:2181,cdh2:2181,cdh3:2181',
         |    'connector.properties.1.key' = 'bootstrap.servers',
@@ -54,43 +53,33 @@ object KafkaJoinHbaseByTemporalTable {
         |)
         |""".stripMargin)
 
-    streamTableEnv.sqlUpdate(
+
+    streamTableEnv.executeSql(
       """
         |
-        |CREATE TABLE user_cnt (
-        |    `time` VARCHAR,
-        |    sum_age INT
+        |CREATE TABLE user_cnt(
+        |    rowkey VARCHAR,
+        |    cf ROW(phoneType VARCHAR, clickCount INT, sex VARCHAR,age INT)
         |) WITH (
-        |    'connector.type' = 'jdbc',
-        |    'connector.url' = 'jdbc:mysql://172.19.245.111:3306/report',
-        |    'connector.table' = 'user_cnt',
-        |    'connector.username' = 'root',
-        |    'connector.password' = 'banban123456',
-        |    'connector.write.flush.max-rows' = '1'
+        |    'connector.type' = 'hbase',
+        |    'connector.version' = '2.1.0',
+        |    'connector.table-name' = 'ods.user_cnt',
+        |    'connector.zookeeper.quorum' = 'cdh1:2181,cdh2:2181,cdh3:2181',
+        |    'connector.zookeeper.znode.parent' = '/hbase',
+        |    'connector.write.buffer-flush.max-size' = '10mb',
+        |    'connector.write.buffer-flush.max-rows' = '1000',
+        |    'connector.write.buffer-flush.interval' = '2s'
         |)
         |""".stripMargin)
 
 
-    streamTableEnv.sqlQuery(
-      """
-        |
-        |select * from users
-        |
-        |""".stripMargin).printSchema()
-
-    streamTableEnv.sqlQuery(
-      """
-        |
-        |select * from user_behavior
-        |
-        |""".stripMargin).printSchema()
-
-    streamTableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
         |
         |insert into  user_cnt
         |SELECT
-        |  cast(b.`time` as string) as `time`,  u.age
+        |  b.uid,
+        |  ROW(phoneType, clickCount,sex ,age) as cf
         |FROM
         |  (select * , PROCTIME() AS proctime from user_behavior) AS b
         |  JOIN users FOR SYSTEM_TIME AS OF b.`proctime` AS u

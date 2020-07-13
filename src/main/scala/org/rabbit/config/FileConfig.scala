@@ -22,6 +22,8 @@ object FileConfig {
   val devDataSource: Config = combinedConfig.getConfig("dev.dataSource")
   val prodDataSource: Config = combinedConfig.getConfig("prod.dataSource")
 
+  val emailConfig: Config = combinedConfig.getConfig("email")
+
 
 //  printConf(myConfig)
   def printConf(config: Config): Unit = println(config.root().render(ConfigRenderOptions.concise().setFormatted(true).setJson(true)))

@@ -30,8 +30,7 @@ under the License.
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<flink.version>1.10.1</flink.version>
-<!--		<flink.version>1.11-SNAPSHOT</flink.version>-->
+		<flink.version>1.11.0</flink.version>
 		<java.version>1.8</java.version>
 		<scala.version>2.11.12</scala.version>
 		<scala.binary.version>2.11</scala.binary.version>
@@ -65,102 +64,86 @@ under the License.
 		</repository>
 	</repositories>
 
+
 	<dependencies>
 		<!-- Apache Flink dependencies -->
 		<!-- These dependencies are provided, because they should not be packaged into the JAR file. -->
+
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-scala_2.11</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-streaming-scala_2.11</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-clients_2.11</artifactId>
+			<version>${flink.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-cep-scala_2.11</artifactId>
-			<version>1.10.1</version>
+			<version>${flink.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-table-common</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-api-scala-bridge -->
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-table-api-scala-bridge_2.11</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-table-planner-blink_2.11</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.codehaus.janino</groupId>
-					<artifactId>janino</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.codehaus.janino</groupId>
-					<artifactId>commons-compiler</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
+
+
+
 
 
 		<!-- Add connector dependencies here. They must be in the default scope (compile). -->
 
-		<!-- Add logging framework, to produce console output when running in the IDE. -->
-		<!-- These dependencies are excluded from the application JAR by default. -->
-
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-connector-jdbc_2.11</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-sql-connector-kafka_2.11</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-connector-kafka_2.11</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-jdbc_2.11</artifactId>
-			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-avro</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-csv</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.flink/flink-json -->
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-json</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -170,33 +153,23 @@ under the License.
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Flink Dependency -->
+<!--		<dependency>-->
+<!--			<groupId>org.apache.flink</groupId>-->
+<!--			<artifactId>flink-connector-hive_2.11</artifactId>-->
+<!--			<version>${flink.version}</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-connector-hive_2.11</artifactId>
+			<artifactId>flink-table-api-java-bridge_2.11</artifactId>
 			<version>${flink.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-hbase_2.11</artifactId>
-			<version>1.10-SNAPSHOT</version>
+			<artifactId>flink-sql-connector-hive-2.2.0_2.11</artifactId>
+			<version>${flink.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.hbase</groupId>
-			<artifactId>hbase-client</artifactId>
-			<version>2.1.0</version>
-		</dependency>
-
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.flink/flink-connector-filesystem &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.apache.flink</groupId>-->
-<!--			<artifactId>flink-connector-filesystem_2.11</artifactId>-->
-<!--			<version>1.10.0</version>-->
-<!--		</dependency>-->
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-client &ndash;&gt;-->
-
-
 		<!-- Hive Dependency -->
 		<dependency>
 			<groupId>org.apache.hive</groupId>
@@ -214,6 +187,21 @@ under the License.
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.apache.flink/flink-hbase -->
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-connector-hbase_2.11</artifactId>
+			<version>1.11-SNAPSHOT</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-client</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
@@ -250,17 +238,6 @@ under the License.
 			<version>2.4.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-core</artifactId>
-			<version>3.9.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.vertx/vertx-jdbc-client -->
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-jdbc-client</artifactId>
-			<version>3.9.1</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.lettuce/lettuce-core -->
 		<dependency>
 			<groupId>io.lettuce</groupId>
@@ -275,7 +252,23 @@ under the License.
 			<version>4.13</version>
 			<!--					<scope>test</scope>-->
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-core</artifactId>
+			<version>3.9.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.vertx/vertx-jdbc-client -->
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-jdbc-client</artifactId>
+			<version>3.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -459,6 +452,11 @@ under the License.
 					<artifactId>flink-streaming-scala_2.11</artifactId>
 					<version>${flink.version}</version>
 				</dependency>
+				<dependency>
+					<groupId>org.apache.flink</groupId>
+					<artifactId>flink-clients_2.11</artifactId>
+					<version>${flink.version}</version>
+				</dependency>
 
 				<dependency>
 					<groupId>org.apache.flink</groupId>
@@ -477,17 +475,44 @@ under the License.
 				</dependency>
 
 
+<!--				hive dependency needs-->
+				<dependency>
+					<groupId>org.apache.flink</groupId>
+					<artifactId>flink-table-api-java-bridge_2.11</artifactId>
+					<version>${flink.version}</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.flink</groupId>
+					<artifactId>flink-sql-connector-hive-2.2.0_2.11</artifactId>
+					<version>${flink.version}</version>
+				</dependency>
+				<!-- Hive Dependency -->
+				<dependency>
+					<groupId>org.apache.hive</groupId>
+					<artifactId>hive-exec</artifactId>
+					<version>2.1.1</version>
+					<scope>provided</scope>
+					<exclusions>
+						<exclusion>
+							<groupId>org.codehaus.janino</groupId>
+							<artifactId>janino</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.codehaus.janino</groupId>
+							<artifactId>commons-compiler</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+
 
 
 
 				<!-- Add connector dependencies here. They must be in the default scope (compile). -->
 
-				<!-- Add logging framework, to produce console output when running in the IDE. -->
-				<!-- These dependencies are excluded from the application JAR by default. -->
-
 				<dependency>
 					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-jdbc_2.11</artifactId>
+					<artifactId>flink-connector-jdbc_2.11</artifactId>
 					<version>${flink.version}</version>
 				</dependency>
 
@@ -536,8 +561,8 @@ under the License.
 				<!-- https://mvnrepository.com/artifact/org.apache.flink/flink-hbase -->
 				<dependency>
 					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-hbase_2.11</artifactId>
-					<version>1.10-SNAPSHOT</version>
+					<artifactId>flink-connector-hbase_2.11</artifactId>
+					<version>1.11-SNAPSHOT</version>
 				</dependency>
 				<!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
 				<dependency>
@@ -546,23 +571,7 @@ under the License.
 					<version>2.1.0</version>
 				</dependency>
 
-				<!-- Hive Dependency -->
-				<dependency>
-					<groupId>org.apache.hive</groupId>
-					<artifactId>hive-exec</artifactId>
-					<version>2.1.1</version>
-								<scope>provided</scope>
-					<exclusions>
-						<exclusion>
-							<groupId>org.codehaus.janino</groupId>
-							<artifactId>janino</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>org.codehaus.janino</groupId>
-							<artifactId>commons-compiler</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
+
 
 				<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 				<dependency>
@@ -624,6 +633,11 @@ under the License.
 					<groupId>io.vertx</groupId>
 					<artifactId>vertx-jdbc-client</artifactId>
 					<version>3.9.1</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-email</artifactId>
+					<version>1.5</version>
 				</dependency>
 			</dependencies>
 		</profile>
