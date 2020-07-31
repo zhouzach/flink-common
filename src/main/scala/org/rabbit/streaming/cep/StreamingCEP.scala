@@ -19,7 +19,7 @@ import org.apache.flink.util.Collector
 import org.rabbit.config.DevDbConfig
 import org.rabbit.connectors.JdbcRichSink
 import org.rabbit.models.BehaviorData
-import org.rabbit.utils.{MailHelper, MailInfo}
+import org.rabbit.util.{MailHelper, MailInfo}
 
 
 /**

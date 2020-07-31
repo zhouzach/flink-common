@@ -1,4 +1,4 @@
-package org.rabbit.utils
+package org.rabbit.util
 
 import org.apache.commons.mail.{Email, EmailAttachment, HtmlEmail, MultiPartEmail, SimpleEmail}
 import org.rabbit.config.FileConfig

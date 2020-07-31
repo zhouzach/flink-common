@@ -1,4 +1,4 @@
-package org.rabbit.utils
+package org.rabbit.util
 
 import com.jayway.jsonpath.JsonPath
 

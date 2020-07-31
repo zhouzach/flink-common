@@ -70,7 +70,6 @@ object FromKafkaSinkJdbcForUser {
 
 
 
-    streamTableEnv.execute("from kafka sink mysql")
   }
 
 }

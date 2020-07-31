@@ -30,12 +30,13 @@ under the License.
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<flink.version>1.11.0</flink.version>
+		<flink.version>1.11.1</flink.version>
 		<java.version>1.8</java.version>
 		<scala.version>2.11.12</scala.version>
 		<scala.binary.version>2.11</scala.binary.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<hadoop.version>3.0.0</hadoop.version>
 	</properties>
 
 	<repositories>
@@ -154,21 +155,22 @@ under the License.
 		</dependency>
 
 		<!-- Flink Dependency -->
-<!--		<dependency>-->
-<!--			<groupId>org.apache.flink</groupId>-->
-<!--			<artifactId>flink-connector-hive_2.11</artifactId>-->
-<!--			<version>${flink.version}</version>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-table-api-java-bridge_2.11</artifactId>
+			<artifactId>flink-connector-hive_2.11</artifactId>
 			<version>${flink.version}</version>
-			<scope>provided</scope>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.apache.flink</groupId>-->
+<!--			<artifactId>flink-table-api-java-bridge_2.11</artifactId>-->
+<!--			<version>${flink.version}</version>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-sql-connector-hive-2.2.0_2.11</artifactId>
 			<version>${flink.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- Hive Dependency -->
 		<dependency>
@@ -186,6 +188,27 @@ under the License.
 					<artifactId>commons-compiler</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-hdfs</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-mapreduce-client-core</artifactId>
+			<version>${hadoop.version}</version>
 		</dependency>
 
 
@@ -269,6 +292,14 @@ under the License.
 			<artifactId>commons-email</artifactId>
 			<version>1.5</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/ch.hsr/geohash -->
+		<dependency>
+			<groupId>ch.hsr</groupId>
+			<artifactId>geohash</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -476,12 +507,12 @@ under the License.
 
 
 <!--				hive dependency needs-->
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-table-api-java-bridge_2.11</artifactId>
-					<version>${flink.version}</version>
-					<scope>provided</scope>
-				</dependency>
+<!--				<dependency>-->
+<!--					<groupId>org.apache.flink</groupId>-->
+<!--					<artifactId>flink-table-api-java-bridge_2.11</artifactId>-->
+<!--					<version>${flink.version}</version>-->
+<!--					<scope>provided</scope>-->
+<!--				</dependency>-->
 				<dependency>
 					<groupId>org.apache.flink</groupId>
 					<artifactId>flink-sql-connector-hive-2.2.0_2.11</artifactId>
@@ -503,6 +534,31 @@ under the License.
 							<artifactId>commons-compiler</artifactId>
 						</exclusion>
 					</exclusions>
+				</dependency>
+				<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-client -->
+				<dependency>
+					<groupId>org.apache.hadoop</groupId>
+					<artifactId>hadoop-client</artifactId>
+<!--					<version>3.0.0-cdh6.3.2</version>-->
+					<version>${hadoop.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.hadoop</groupId>
+					<artifactId>hadoop-common</artifactId>
+<!--					<version>3.0.0-cdh6.3.2</version>-->
+					<version>${hadoop.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.hadoop</groupId>
+					<artifactId>hadoop-hdfs</artifactId>
+					<version>${hadoop.version}</version>
+<!--					<version>3.0.0-cdh6.3.2</version>-->
+				</dependency>
+				<dependency>
+					<groupId>org.apache.hadoop</groupId>
+					<artifactId>hadoop-mapreduce-client-core</artifactId>
+					<version>${hadoop.version}</version>
+<!--					<version>3.0.0-cdh6.3.2</version>-->
 				</dependency>
 
 
@@ -542,6 +598,12 @@ under the License.
 					<artifactId>flink-json</artifactId>
 					<version>${flink.version}</version>
 				</dependency>
+				<dependency>
+					<groupId>org.apache.flink</groupId>
+					<artifactId>flink-statebackend-rocksdb_2.11</artifactId>
+					<version>${flink.version}</version>
+<!--					<scope>provided</scope>-->
+				</dependency>
 
 
 
@@ -551,12 +613,12 @@ under the License.
 					<version>1.0</version>
 				</dependency>
 
-				<!-- Flink Dependency -->
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-connector-hive_2.11</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
+<!--				&lt;!&ndash; streaming api hive Dependency &ndash;&gt;-->
+<!--				<dependency>-->
+<!--					<groupId>org.apache.flink</groupId>-->
+<!--					<artifactId>flink-connector-hive_2.11</artifactId>-->
+<!--					<version>${flink.version}</version>-->
+<!--				</dependency>-->
 
 				<!-- https://mvnrepository.com/artifact/org.apache.flink/flink-hbase -->
 				<dependency>

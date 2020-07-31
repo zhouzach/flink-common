@@ -121,7 +121,7 @@ object FromKafkaSinkJdbcForUserUV {
 
 
 
-//    streamTableEnv.execute("from kafka sink mysql")
+    streamTableEnv.execute("from kafka sink mysql")
   }
 
 }

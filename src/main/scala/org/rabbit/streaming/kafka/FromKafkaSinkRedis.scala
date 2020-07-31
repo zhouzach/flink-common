@@ -3,7 +3,6 @@ package org.rabbit.streaming.kafka
 import java.util.Properties
 
 import com.alibaba.fastjson.JSON
-import org.apache.flink.api.common.functions.AggregateFunction
 import org.apache.flink.api.common.serialization.SimpleStringSchema
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows
@@ -14,12 +13,13 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer
 import org.apache.flink.streaming.connectors.redis.RedisSink
 import org.apache.flink.streaming.connectors.redis.common.config.FlinkJedisPoolConfig
 import org.apache.flink.streaming.connectors.redis.common.mapper.{RedisCommand, RedisCommandDescription, RedisMapper}
-import org.rabbit.models.{BehaviorData, Record}
+import org.rabbit.models.{BehaviorData, ResultInfo}
+import org.rabbit.streaming.agg.MultiDimensionalAggregate
 
 /**
  * https://cloud.tencent.com/developer/article/1536148
  */
-object RealTime2ScreenConsumer {
+object FromKafkaSinkRedis {
 
   val env = StreamExecutionEnvironment.getExecutionEnvironment
 
@@ -34,8 +34,8 @@ object RealTime2ScreenConsumer {
 
     val properties = new Properties()
     properties.setProperty("bootstrap.servers", "cdh1:9092,cdh2:9092,cdh3:9092")
-    properties.setProperty("group.id", "flink")
-    val topic = "user_behavior"
+    properties.setProperty("group.id", "screen_flink")
+    val topic = "t_user_behavior_1"
 
     val consumer = new FlinkKafkaConsumer[String](topic, new SimpleStringSchema(), properties)
 //        consumer.setStartFromEarliest()
@@ -55,22 +55,23 @@ object RealTime2ScreenConsumer {
       .name("source_kafka_bill")
       .uid("source_kafka_bill")
 
-    sourceStream.print()
+//    sourceStream.print()
 
     val billStream = sourceStream.map(message => JSON.parseObject(message, classOf[BehaviorData]))
       //      .map(data => (data.uid, data.time, data.phoneType, data.clickCount))
       .name("map_sub_bill").uid("map_sub_bill")
 
     /**
-     * 将子订单流按uid分组，开1天的滚动窗口，注意处理时间的时区问题
-     * 并同时设定ContinuousProcessingTimeTrigger触发器，以1秒周期触发计算。
+     * 将子订单流按uid分组，开1天的滚动窗口(按照自然日来统计指标)，注意处理时间的时区问题
+     * 并同时设定ContinuousProcessingTimeTrigger触发器，以1秒周期触发计算(以1秒的刷新频率呈现在大屏上)。
      */
     val uidDayWindowStream = billStream
       //      .keyBy(0)
       .keyBy("uid", "phoneType")
       .window(TumblingProcessingTimeWindows.of(Time.days(1), Time.hours(-8)))
       //            .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
-      .trigger(ContinuousProcessingTimeTrigger.of(Time.minutes(1)));
+//      .trigger(ContinuousProcessingTimeTrigger.of(Time.minutes(1)));
+    .trigger(ContinuousProcessingTimeTrigger.of(Time.seconds(1)));
 
     val uidPhoneAgg = uidDayWindowStream.aggregate(new MultiDimensionalAggregate)
       .name("aggregate_uid_phoneType_count").uid("aggregate_uid_phoneType_count")
@@ -90,74 +91,15 @@ object RealTime2ScreenConsumer {
 }
 
 class PojoRedisMapper extends RedisMapper[ResultInfo] {
-  val HASH_NAME_PREFIX = "DASHBOARD:USER:PHONE:SUM9"
+  private val serialVersionUID = 1L
+  val HASH_NAME_PREFIX = "DASHBOARD:USER:PHONE:CNT"
 
   override def getCommandDescription: RedisCommandDescription = {
     new RedisCommandDescription(RedisCommand.HSET, HASH_NAME_PREFIX)
   }
 
-  override def getKeyFromData(data: ResultInfo): String = data.uid + "_" + data.phoneType
+  override def getKeyFromData(data: ResultInfo): String = data.uid + "_" + data.phone_type
 
-  override def getValueFromData(data: ResultInfo): String = String.valueOf(data.sum)
+  override def getValueFromData(data: ResultInfo): String = String.valueOf(data.cnt)
 }
 
-case class ResultInfo(uid: String, phoneType: String, var sum: Int)
-
-class MultiDimensionalAggregate extends AggregateFunction[BehaviorData, ResultInfo, ResultInfo] {
-
-  override def createAccumulator(): ResultInfo = {
-    ResultInfo("", "", 0)
-  }
-
-  override def merge(acc1: ResultInfo, acc2: ResultInfo): ResultInfo = {
-    ResultInfo(acc1.uid, acc1.phoneType, acc1.sum + acc2.sum)
-  }
-
-  override def add(value: BehaviorData, acc: ResultInfo): ResultInfo = {
-    if (acc.uid.equals(value.uid) && acc.phoneType.equals(value.phoneType)) {
-      acc.sum = acc.sum + value.clickCount
-      acc
-    } else if (acc.uid.equals(value.uid)) {
-      ResultInfo(acc.uid, value.phoneType, value.clickCount)
-    } else {
-      ResultInfo(value.uid + acc.uid, value.phoneType + acc.phoneType, value.clickCount)
-    }
-  }
-
-  override def getResult(acc: ResultInfo): ResultInfo = {
-    acc
-  }
-}
-
-
-class SingleDimensionalAggregate extends AggregateFunction[(String, String, String, Int), (String, Int), (String, Int)] {
-
-  override def createAccumulator(): (String, Int) = {
-    ("", 0)
-  }
-
-  override def merge(a: (String, Int), b: (String, Int)): (String, Int) = {
-    (a._1, a._2 + b._2)
-  }
-
-  override def add(value: (String, String, String, Int), acc: (String, Int)): (String, Int) = {
-    (value._1, value._4 + acc._2)
-  }
-
-  override def getResult(acc: (String, Int)): (String, Int) = {
-    acc
-  }
-}
-
-
-class SingleDimensionalRedisMapper extends RedisMapper[(String, Int)] {
-  val HASH_NAME_PREFIX = "DASHBOARD:USER:PHONE:SUM7"
-
-  override def getCommandDescription: RedisCommandDescription = {
-    new RedisCommandDescription(RedisCommand.HSET, HASH_NAME_PREFIX)
-  }
-
-  override def getKeyFromData(data: (String, Int)): String = data._1
-
-  override def getValueFromData(data: (String, Int)): String = String.valueOf(data._2)
-}
