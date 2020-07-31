@@ -15,12 +15,9 @@ import org.apache.flink.configuration.Configuration
 import org.apache.flink.contrib.streaming.state.RocksDBStateBackend
 import org.apache.flink.streaming.api.environment.ExecutionCheckpointingOptions
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction
-import org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.scala.function.WindowFunction
-import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows
 import org.apache.flink.streaming.api.windowing.time.Time
-import org.apache.flink.streaming.api.windowing.triggers.ContinuousProcessingTimeTrigger
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer
@@ -28,11 +25,10 @@ import org.apache.flink.table.api.EnvironmentSettings
 import org.apache.flink.table.api.bridge.scala.StreamTableEnvironment
 import org.apache.flink.util.Collector
 import org.rabbit.config.DevDbConfig
-import org.rabbit.models.{BehaviorData, RoomUserInfo}
-import org.rabbit.streaming.agg.MultiDimensionalAggregate
+import org.rabbit.models.RoomUserInfo
 
 /**
- * https://cloud.tencent.com/developer/article/1536148
+ * https://www.cnblogs.com/huangqingshi/p/12041032.html
  */
 object RoomUserTopN {
   val streamExecutionEnv = StreamExecutionEnvironment.getExecutionEnvironment
