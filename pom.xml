@@ -17,692 +17,482 @@ specific language governing permissions and limitations
 under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.rabbit</groupId>
-	<artifactId>flink-common</artifactId>
-	<version>0.1</version>
-	<packaging>jar</packaging>
+    <groupId>org.rabbit</groupId>
+    <artifactId>flink-common</artifactId>
+    <version>0.1</version>
+    <packaging>jar</packaging>
 
-	<name>Flink common Job</name>
-	<url>http://www.rabbit.org</url>
+    <name>Flink common Job</name>
+    <url>http://www.rabbit.org</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<flink.version>1.11.1</flink.version>
-		<java.version>1.8</java.version>
-		<scala.version>2.11.12</scala.version>
-		<scala.binary.version>2.11</scala.binary.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<hadoop.version>3.0.0</hadoop.version>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <flink.version>1.11.1</flink.version>
+        <java.version>1.8</java.version>
+        <scala.version>2.11.12</scala.version>
+        <scala.binary.version>2.11</scala.binary.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <hadoop.version>3.0.0</hadoop.version>
+        <phoenix.version>5.0.0-cdh6.2.0</phoenix.version>
+    </properties>
 
-	<repositories>
-		<repository>
-			<id>maven-net-cn</id>
-			<name>Maven China Mirror</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
+    <repositories>
+        <repository>
+            <id>maven-net-cn</id>
+            <name>Maven China Mirror</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
 
-		<repository>
-			<id>apache.snapshots</id>
-			<name>Apache Development Snapshot Repository</name>
-			<url>https://repository.apache.org/content/repositories/snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-
-	<dependencies>
-		<!-- Apache Flink dependencies -->
-		<!-- These dependencies are provided, because they should not be packaged into the JAR file. -->
-
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-scala_2.11</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-streaming-scala_2.11</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-clients_2.11</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-cep-scala_2.11</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-table-common</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-table-api-scala-bridge_2.11</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-table-planner-blink_2.11</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
+        <repository>
+            <id>apache.snapshots</id>
+            <name>Apache Development Snapshot Repository</name>
+            <url>https://repository.apache.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 
+    <dependencies>
+        <!-- Apache Flink dependencies -->
+        <!-- These dependencies are provided, because they should not be packaged into the JAR file. -->
+
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-scala_2.11</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-scala_2.11</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-clients_2.11</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-cep-scala_2.11</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-common</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-api-scala-bridge_2.11</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-planner-blink_2.11</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-statebackend-rocksdb_2.11</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
 
 
+        <!-- Add connector dependencies here. They must be in the default scope (compile). -->
 
-		<!-- Add connector dependencies here. They must be in the default scope (compile). -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-jdbc_2.11</artifactId>
+            <version>1.11-SNAPSHOT</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-connector-jdbc_2.11</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-sql-connector-kafka_2.11</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-kafka_2.11</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-avro</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-csv</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-json -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-json</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-sql-connector-kafka_2.11</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-connector-kafka_2.11</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-avro</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-csv</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.flink/flink-json -->
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-json</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.bahir</groupId>
+            <artifactId>flink-connector-redis_2.11</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.apache.bahir</groupId>
-			<artifactId>flink-connector-redis_2.11</artifactId>
-			<version>1.0</version>
-			<scope>provided</scope>
-		</dependency>
+        <!-- Flink Dependency -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-hive_2.11</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
 
-		<!-- Flink Dependency -->
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-connector-hive_2.11</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.apache.flink</groupId>-->
-<!--			<artifactId>flink-table-api-java-bridge_2.11</artifactId>-->
-<!--			<version>${flink.version}</version>-->
-<!--			<scope>provided</scope>-->
-<!--		</dependency>-->
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-sql-connector-hive-2.2.0_2.11</artifactId>
-			<version>${flink.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- Hive Dependency -->
-		<dependency>
-			<groupId>org.apache.hive</groupId>
-			<artifactId>hive-exec</artifactId>
-			<version>2.1.1</version>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.codehaus.janino</groupId>
-					<artifactId>janino</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.codehaus.janino</groupId>
-					<artifactId>commons-compiler</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-sql-connector-hive-2.2.0_2.11</artifactId>
+            <version>${flink.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-exec</artifactId>
+            <version>2.1.1</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.janino</groupId>
+                    <artifactId>janino</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.janino</groupId>
+                    <artifactId>commons-compiler</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-client</artifactId>
-			<version>${hadoop.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-common</artifactId>
-			<version>${hadoop.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-hdfs</artifactId>
-			<version>${hadoop.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-mapreduce-client-core</artifactId>
-			<version>${hadoop.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>${hadoop.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-hdfs</artifactId>
+            <version>${hadoop.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-mapreduce-client-core</artifactId>
+            <version>${hadoop.version}</version>
+        </dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/org.apache.flink/flink-hbase -->
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-connector-hbase_2.11</artifactId>
-			<version>1.11-SNAPSHOT</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
-		<dependency>
-			<groupId>org.apache.hbase</groupId>
-			<artifactId>hbase-client</artifactId>
-			<version>2.1.0</version>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-hbase_2.11</artifactId>
+            <version>1.11-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>2.1.0</version>
+        </dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.12</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.46</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.7</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.68</version>
-		</dependency>
-		<dependency>
-			<groupId>com.jayway.jsonpath</groupId>
-			<artifactId>json-path</artifactId>
-			<version>2.4.0</version>
-		</dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.46</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.7</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.68</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>2.4.0</version>
+        </dependency>
 
-		<!-- https://mvnrepository.com/artifact/io.lettuce/lettuce-core -->
-		<dependency>
-			<groupId>io.lettuce</groupId>
-			<artifactId>lettuce-core</artifactId>
-			<version>5.3.1.RELEASE</version>
-		</dependency>
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>5.3.1.RELEASE</version>
+        </dependency>
 
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13</version>
-			<!--					<scope>test</scope>-->
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-core</artifactId>
-			<version>3.9.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.vertx/vertx-jdbc-client -->
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-jdbc-client</artifactId>
-			<version>3.9.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-email</artifactId>
-			<version>1.5</version>
-		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+            <!--					<scope>test</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-jdbc-client</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.5</version>
+        </dependency>
 
-		<!-- https://mvnrepository.com/artifact/ch.hsr/geohash -->
-		<dependency>
-			<groupId>ch.hsr</groupId>
-			<artifactId>geohash</artifactId>
-			<version>1.4.0</version>
-		</dependency>
+        <dependency>
+            <groupId>ch.hsr</groupId>
+            <artifactId>geohash</artifactId>
+            <version>1.4.0</version>
+        </dependency>
 
-	</dependencies>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.phoenix</groupId>-->
+<!--            <artifactId>phoenix-thin-client</artifactId>-->
+<!--            <version>${phoenix.version}</version>-->
+<!--        </dependency>-->
 
-	<build>
-		<plugins>
+        <dependency>
+            <groupId>org.apache.phoenix</groupId>
+            <artifactId>phoenix-client</artifactId>
+            <version>${phoenix.version}</version>
+        </dependency>
 
-			<!-- Java Compiler -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
+        <dependency>
+            <groupId>org.apache.phoenix</groupId>
+            <artifactId>phoenix-core</artifactId>
+            <version>${phoenix.version}</version>
+        </dependency>
 
-			<!-- Scala Compiler -->
-			<plugin>
-				<groupId>net.alchim31.maven</groupId>
-				<artifactId>scala-maven-plugin</artifactId>
-				<version>3.2.2</version>
-				<configuration>
-					<args>
-						<arg>-target:jvm-1.8</arg>
-					</args>
-					<jvmArgs>
-						<jvmArg>-Xms128m</jvmArg>
-						<jvmArg>-Xmx512m</jvmArg>
-					</jvmArgs>
-				</configuration>
-				<executions>
-					<!-- Run scala compiler in the process-resources phase, so that dependencies on
+        <dependency>
+            <groupId>com.alibaba.ververica</groupId>
+            <artifactId>flink-connector-mysql-cdc</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Java Compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <!-- Scala Compiler -->
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <args>
+                        <arg>-target:jvm-1.8</arg>
+                    </args>
+                    <jvmArgs>
+                        <jvmArg>-Xms128m</jvmArg>
+                        <jvmArg>-Xmx512m</jvmArg>
+                    </jvmArgs>
+                </configuration>
+                <executions>
+                    <!-- Run scala compiler in the process-resources phase, so that dependencies on
     scala classes can be resolved later in the (Java) compile phase -->
-					<execution>
-						<id>scala-compile-first</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
 
-					<!-- Run scala compiler in the process-test-resources phase, so that dependencies on
+                    <!-- Run scala compiler in the process-test-resources phase, so that dependencies on
                          scala classes can be resolved later in the (Java) test-compile phase -->
-					<execution>
-						<id>scala-test-compile</id>
-						<phase>process-test-resources</phase>
-						<goals>
-							<goal>testCompile</goal>
-						</goals>
-					</execution>
+                    <execution>
+                        <id>scala-test-compile</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
 
-					<execution>
-						<id>scala-add-source</id>
-						<phase>package</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+                    <execution>
+                        <id>scala-add-source</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<!-- We use the maven-shade plugin to create a fat jar that contains all necessary dependencies. -->
-			<!-- Change the value of <mainClass>...</mainClass> if your program entry point changes. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<!-- Run shade goal on package phase -->
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-<!--							<artifactSet>-->
-<!--								<excludes>-->
-<!--									<exclude>org.apache.flink:force-shading</exclude>-->
-<!--									<exclude>com.google.code.findbugs:jsr305</exclude>-->
-<!--									<exclude>org.slf4j:*</exclude>-->
-<!--									<exclude>log4j:*</exclude>-->
-<!--								</excludes>-->
-<!--							</artifactSet>-->
-							<filters>
-								<filter>
-									<!-- Do not copy the signatures in the META-INF folder.
-									Otherwise, this might cause SecurityExceptions when using the JAR. -->
-									<artifact>*:*</artifact>
-									<excludes>
-										<exclude>META-INF/*.SF</exclude>
-										<exclude>META-INF/*.DSA</exclude>
-										<exclude>META-INF/*.RSA</exclude>
-									</excludes>
-								</filter>
-							</filters>
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>org.rabbit.streaming.kafka.FromKafkaSinkHdfs</mainClass>
-								</transformer>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>reference.conf</resource>
-								</transformer>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-							</transformers>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+            <!-- We use the maven-shade plugin to create a fat jar that contains all necessary dependencies. -->
+            <!-- Change the value of <mainClass>...</mainClass> if your program entry point changes. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <!-- Run shade goal on package phase -->
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!--							<artifactSet>-->
+                            <!--								<excludes>-->
+                            <!--									<exclude>org.apache.flink:force-shading</exclude>-->
+                            <!--									<exclude>com.google.code.findbugs:jsr305</exclude>-->
+                            <!--									<exclude>org.slf4j:*</exclude>-->
+                            <!--									<exclude>log4j:*</exclude>-->
+                            <!--								</excludes>-->
+                            <!--							</artifactSet>-->
+                            <filters>
+                                <filter>
+                                    <!-- Do not copy the signatures in the META-INF folder.
+                                    Otherwise, this might cause SecurityExceptions when using the JAR. -->
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.rabbit.streaming.kafka.FromKafkaSinkHdfs</mainClass>
+                                </transformer>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>reference.conf</resource>
+                                </transformer>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 
-		<pluginManagement>
-			<plugins>
+        <pluginManagement>
+            <plugins>
 
-				<!-- This improves the out-of-the-box experience in Eclipse by resolving some warnings. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-shade-plugin</artifactId>
-										<versionRange>[3.0.0,)</versionRange>
-										<goals>
-											<goal>shade</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore/>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-compiler-plugin</artifactId>
-										<versionRange>[3.1,)</versionRange>
-										<goals>
-											<goal>testCompile</goal>
-											<goal>compile</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore/>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+                <!-- This improves the out-of-the-box experience in Eclipse by resolving some warnings. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-shade-plugin</artifactId>
+                                        <versionRange>[3.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>shade</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore/>
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-compiler-plugin</artifactId>
+                                        <versionRange>[3.1,)</versionRange>
+                                        <goals>
+                                            <goal>testCompile</goal>
+                                            <goal>compile</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore/>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
-	<!-- This profile helps to make things run out of the box in IntelliJ -->
-	<!-- Its adds Flink's core classes to the runtime class path. -->
-	<!-- Otherwise they are missing in IntelliJ, because the dependency is 'provided' -->
-	<profiles>
-		<profile>
-			<id>add-dependencies-for-IDEA</id>
+    <!-- This profile helps to make things run out of the box in IntelliJ -->
+    <!-- Its adds Flink's core classes to the runtime class path. -->
+    <!-- Otherwise they are missing in IntelliJ, because the dependency is 'provided' -->
+    <profiles>
+        <profile>
+            <id>add-dependencies-for-IDEA</id>
 
-			<activation>
-				<property>
-					<name>idea.version</name>
-				</property>
-			</activation>
+            <activation>
+                <property>
+                    <name>idea.version</name>
+                </property>
+            </activation>
 
-			<dependencies>
-				<!-- Apache Flink dependencies -->
-				<!-- These dependencies are provided, because they should not be packaged into the JAR file. -->
-
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-scala_2.11</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-streaming-scala_2.11</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-clients_2.11</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-table-common</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-table-api-scala-bridge_2.11</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-table-planner-blink_2.11</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
+            <dependencies>
+                <!-- Apache Flink dependencies -->
+                <!-- These dependencies are provided, because they should not be packaged into the JAR file. -->
 
 
-<!--				hive dependency needs-->
-<!--				<dependency>-->
-<!--					<groupId>org.apache.flink</groupId>-->
-<!--					<artifactId>flink-table-api-java-bridge_2.11</artifactId>-->
-<!--					<version>${flink.version}</version>-->
-<!--					<scope>provided</scope>-->
-<!--				</dependency>-->
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-sql-connector-hive-2.2.0_2.11</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-				<!-- Hive Dependency -->
-				<dependency>
-					<groupId>org.apache.hive</groupId>
-					<artifactId>hive-exec</artifactId>
-					<version>2.1.1</version>
-					<scope>provided</scope>
-					<exclusions>
-						<exclusion>
-							<groupId>org.codehaus.janino</groupId>
-							<artifactId>janino</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>org.codehaus.janino</groupId>
-							<artifactId>commons-compiler</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-				<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-client -->
-				<dependency>
-					<groupId>org.apache.hadoop</groupId>
-					<artifactId>hadoop-client</artifactId>
-<!--					<version>3.0.0-cdh6.3.2</version>-->
-					<version>${hadoop.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.hadoop</groupId>
-					<artifactId>hadoop-common</artifactId>
-<!--					<version>3.0.0-cdh6.3.2</version>-->
-					<version>${hadoop.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.hadoop</groupId>
-					<artifactId>hadoop-hdfs</artifactId>
-					<version>${hadoop.version}</version>
-<!--					<version>3.0.0-cdh6.3.2</version>-->
-				</dependency>
-				<dependency>
-					<groupId>org.apache.hadoop</groupId>
-					<artifactId>hadoop-mapreduce-client-core</artifactId>
-					<version>${hadoop.version}</version>
-<!--					<version>3.0.0-cdh6.3.2</version>-->
-				</dependency>
-
-
-
-
-				<!-- Add connector dependencies here. They must be in the default scope (compile). -->
-
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-connector-jdbc_2.11</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-sql-connector-kafka_2.11</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-connector-kafka_2.11</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-avro</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-csv</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-				<!-- https://mvnrepository.com/artifact/org.apache.flink/flink-json -->
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-json</artifactId>
-					<version>${flink.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-statebackend-rocksdb_2.11</artifactId>
-					<version>${flink.version}</version>
-<!--					<scope>provided</scope>-->
-				</dependency>
-
-
-
-				<dependency>
-					<groupId>org.apache.bahir</groupId>
-					<artifactId>flink-connector-redis_2.11</artifactId>
-					<version>1.0</version>
-				</dependency>
-
-<!--				&lt;!&ndash; streaming api hive Dependency &ndash;&gt;-->
-<!--				<dependency>-->
-<!--					<groupId>org.apache.flink</groupId>-->
-<!--					<artifactId>flink-connector-hive_2.11</artifactId>-->
-<!--					<version>${flink.version}</version>-->
-<!--				</dependency>-->
-
-				<!-- https://mvnrepository.com/artifact/org.apache.flink/flink-hbase -->
-				<dependency>
-					<groupId>org.apache.flink</groupId>
-					<artifactId>flink-connector-hbase_2.11</artifactId>
-					<version>1.11-SNAPSHOT</version>
-				</dependency>
-				<!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
-				<dependency>
-					<groupId>org.apache.hbase</groupId>
-					<artifactId>hbase-client</artifactId>
-					<version>2.1.0</version>
-				</dependency>
-
-
-
-				<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-				<dependency>
-					<groupId>org.projectlombok</groupId>
-					<artifactId>lombok</artifactId>
-					<version>1.18.12</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-					<version>5.1.46</version>
-				</dependency>
-				<dependency>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-					<version>1.7.7</version>
-					<scope>runtime</scope>
-				</dependency>
-				<dependency>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-					<version>1.2.17</version>
-					<scope>runtime</scope>
-				</dependency>
-				<dependency>
-					<groupId>com.alibaba</groupId>
-					<artifactId>fastjson</artifactId>
-					<version>1.2.68</version>
-				</dependency>
-				<dependency>
-					<groupId>com.jayway.jsonpath</groupId>
-					<artifactId>json-path</artifactId>
-					<version>2.4.0</version>
-				</dependency>
-
-				<!-- https://mvnrepository.com/artifact/io.lettuce/lettuce-core -->
-				<dependency>
-					<groupId>io.lettuce</groupId>
-					<artifactId>lettuce-core</artifactId>
-					<version>5.3.1.RELEASE</version>
-				</dependency>
-
-				<!-- https://mvnrepository.com/artifact/junit/junit -->
-				<dependency>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-					<version>4.13</version>
-<!--					<scope>test</scope>-->
-				</dependency>
-				<!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
-				<dependency>
-					<groupId>io.vertx</groupId>
-					<artifactId>vertx-core</artifactId>
-					<version>3.9.1</version>
-				</dependency>
-				<!-- https://mvnrepository.com/artifact/io.vertx/vertx-jdbc-client -->
-				<dependency>
-					<groupId>io.vertx</groupId>
-					<artifactId>vertx-jdbc-client</artifactId>
-					<version>3.9.1</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.commons</groupId>
-					<artifactId>commons-email</artifactId>
-					<version>1.5</version>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
+            </dependencies>
+        </profile>
+    </profiles>
 
 </project>

@@ -37,3 +37,18 @@ object ProdDbConfig extends DbConfig {
 
 }
 
+object DevCDHDbConfig {
+
+
+  val url1: String = FileConfig.cdhDataSource.getString("url1")
+  val host1: String = FileConfig.cdhDataSource.getString("host1")
+
+  val url2: String = FileConfig.cdhDataSource.getString("url2")
+  val host2: String = FileConfig.cdhDataSource.getString("host2")
+
+  val url3: String = FileConfig.cdhDataSource.getString("url3")
+  val host3: String = FileConfig.cdhDataSource.getString("host3")
+
+  val user: String = FileConfig.cdhDataSource.getString("user")
+  val password: String = FileConfig.cdhDataSource.getString("password")
+}

@@ -48,20 +48,20 @@ object KafkaJoinJDBCSinkHBase {
         |    'json.ignore-parse-errors' = 'true'
         |)
         |""".stripMargin)
-    streamTableEnv.executeSql(
-      """
-        |
-        |CREATE TABLE print_kafka
-        |(
-        |   uid VARCHAR,
-        |   sex VARCHAR,
-        | age INT,
-        | created_time VARCHAR
-        |)
-        |WITH ('connector' = 'print')
-        |
-        |
-        |""".stripMargin)
+//    streamTableEnv.executeSql(
+//      """
+//        |
+//        |CREATE TABLE print_kafka
+//        |(
+//        |   uid VARCHAR,
+//        |   sex VARCHAR,
+//        | age INT,
+//        | created_time VARCHAR
+//        |)
+//        |WITH ('connector' = 'print')
+//        |
+//        |
+//        |""".stripMargin)
 
 //    streamTableEnv.executeSql(
 //      """
@@ -91,30 +91,30 @@ object KafkaJoinJDBCSinkHBase {
          |   'table-name' = 'user_mysql_varchar'
          |)
          |""".stripMargin)
-    streamTableEnv.executeSql(
-      """
-        |
-        |CREATE TABLE print_mysql
-        |(
-        |   uid VARCHAR,
-        |   sex VARCHAR,
-        | age INT,
-        | created_time VARCHAR
-        |)
-        |WITH ('connector' = 'print')
-        |
-        |
-        |""".stripMargin)
-
-    streamTableEnv.executeSql(
-      """
-        |insert into print_mysql
-        |SELECT
-        |   uid1,sex1,age1,created_time1
-        |FROM
-        | user_mysql
-        |
-        |""".stripMargin)
+//    streamTableEnv.executeSql(
+//      """
+//        |
+//        |CREATE TABLE print_mysql
+//        |(
+//        |   uid VARCHAR,
+//        |   sex VARCHAR,
+//        | age INT,
+//        | created_time VARCHAR
+//        |)
+//        |WITH ('connector' = 'print')
+//        |
+//        |
+//        |""".stripMargin)
+//
+//    streamTableEnv.executeSql(
+//      """
+//        |insert into print_mysql
+//        |SELECT
+//        |   uid1,sex1,age1,created_time1
+//        |FROM
+//        | user_mysql
+//        |
+//        |""".stripMargin)
 
 
     streamTableEnv.executeSql(
@@ -153,32 +153,32 @@ object KafkaJoinJDBCSinkHBase {
             |""".stripMargin)
 
 
-    streamTableEnv.executeSql(
-      """
-        |
-        |CREATE TABLE print_table
-        |(
-        |   uid VARCHAR,
-        |   uid1 VARCHAR,
-        | age1 INT,
-        | created_time1 VARCHAR
-        |)
-        |WITH ('connector' = 'print')
-        |
-        |
-        |""".stripMargin)
-
-    streamTableEnv.executeSql(
-      """
-        |insert into print_table
-        |SELECT
-        |   kafka_table.uid,uid1,age1,created_time1
-        |FROM
-        | kafka_table
-        |  JOIN user_mysql FOR SYSTEM_TIME AS OF kafka_table.`procTime`
-        |  ON kafka_table.uid = user_mysql.uid1
-        |
-        |""".stripMargin)
+//    streamTableEnv.executeSql(
+//      """
+//        |
+//        |CREATE TABLE print_table
+//        |(
+//        |   uid VARCHAR,
+//        |   uid1 VARCHAR,
+//        | age1 INT,
+//        | created_time1 VARCHAR
+//        |)
+//        |WITH ('connector' = 'print')
+//        |
+//        |
+//        |""".stripMargin)
+//
+//    streamTableEnv.executeSql(
+//      """
+//        |insert into print_table
+//        |SELECT
+//        |   kafka_table.uid,uid1,age1,created_time1
+//        |FROM
+//        | kafka_table
+//        |  JOIN user_mysql FOR SYSTEM_TIME AS OF kafka_table.`procTime`
+//        |  ON kafka_table.uid = user_mysql.uid1
+//        |
+//        |""".stripMargin)
 
 
 

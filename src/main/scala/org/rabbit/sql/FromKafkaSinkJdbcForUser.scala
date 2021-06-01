@@ -1,5 +1,9 @@
 package org.rabbit.sql
 
+import java.time.Duration
+
+import org.apache.flink.contrib.streaming.state.RocksDBStateBackend
+import org.apache.flink.streaming.api.environment.ExecutionCheckpointingOptions
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.table.api.EnvironmentSettings
@@ -12,33 +16,36 @@ object FromKafkaSinkJdbcForUser {
 
     val streamExecutionEnv = StreamExecutionEnvironment.getExecutionEnvironment
     streamExecutionEnv.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
-    streamExecutionEnv.enableCheckpointing(20 * 1000, CheckpointingMode.EXACTLY_ONCE)
-    streamExecutionEnv.getCheckpointConfig.setCheckpointTimeout(900 * 1000)
+//    streamExecutionEnv.setStateBackend(new RocksDBStateBackend("hdfs://nameservice1/flink/checkpoints"))
 
     val blinkEnvSettings = EnvironmentSettings.newInstance().useBlinkPlanner().inStreamingMode().build()
     val streamTableEnv = StreamTableEnvironment.create(streamExecutionEnv, blinkEnvSettings)
+    streamTableEnv.getConfig.getConfiguration.set(ExecutionCheckpointingOptions.CHECKPOINTING_MODE,CheckpointingMode.EXACTLY_ONCE)
+    streamTableEnv.getConfig.getConfiguration.set(ExecutionCheckpointingOptions.CHECKPOINTING_INTERVAL,Duration.ofSeconds(20))
+    streamTableEnv.getConfig.getConfiguration.set(ExecutionCheckpointingOptions.CHECKPOINTING_TIMEOUT,Duration.ofSeconds(900))
+
 
 
     streamTableEnv.executeSql(
       """
         |
         |CREATE TABLE `user` (
-        |    uid VARCHAR,
-        |    -- uid BIGINT,
+        |    uid BIGINT,
         |    sex VARCHAR,
         |    age INT,
-        |    created_time TIMESTAMP(3),
-        |    WATERMARK FOR created_time as created_time - INTERVAL '3' SECOND
+        |    created_time BIGINT,
+        |    procTime AS PROCTIME(),
+        |    eventTime AS TO_TIMESTAMP(FROM_UNIXTIME(created_time/1000, 'yyyy-MM-dd HH:mm:ss')),
+        |    WATERMARK FOR eventTime as eventTime - INTERVAL '3' SECOND
         |) WITH (
-        |    'connector.type' = 'kafka',
-        |    'connector.version' = 'universal',
-        |    'connector.topic' = 'user',
-        |    'connector.startup-mode' = 'latest-offset',
-        |    'connector.properties.zookeeper.connect' = 'cdh1:2181,cdh2:2181,cdh3:2181',
-        |    'connector.properties.bootstrap.servers' = 'cdh1:9092,cdh2:9092,cdh3:9092',
-        |    'connector.properties.group.id' = 'user_flink',
-        |    'format.type' = 'json',
-        |    'format.derive-schema' = 'true'
+        |    'connector' = 'kafka',
+        |     'topic' = 'user',
+        |    'properties.bootstrap.servers' = 'cdh1:9092,cdh2:9092,cdh3:9092',
+        |    'properties.group.id' = 'user_flink',
+        |    'scan.startup.mode' = 'latest-offset',
+        |    'format' = 'json',
+        |    'json.fail-on-missing-field' = 'false',
+        |    'json.ignore-parse-errors' = 'true'
         |)
         |""".stripMargin)
 
@@ -46,17 +53,17 @@ object FromKafkaSinkJdbcForUser {
       s"""
         |
         |CREATE TABLE user_mysql(
-        |    uid VARCHAR,
+        |    uid BIGINT,
         |    sex VARCHAR,
         |    age INT,
-        |    created_time TIMESTAMP(3)
+        |    created_time BIGINT
         |) WITH (
-        |    'connector.type' = 'jdbc',
-        |    'connector.url' = '${DevDbConfig.url}',
-        |    'connector.table' = 'user_mysql_varchar',
-        |    'connector.username' = '${DevDbConfig.user}',
-        |    'connector.password' = '${DevDbConfig.password}',
-        |    'connector.write.flush.max-rows' = '1'
+        |    'connector' = 'jdbc',
+        |    'url' = '${DevDbConfig.url}',
+        |    'table-name' = 'user_mysql',
+        |    'username' = '${DevDbConfig.user}',
+        |    'password' = '${DevDbConfig.password}',
+        |    'sink.buffer-flush.max-rows' = '1'
         |)
         |""".stripMargin)
 
@@ -64,7 +71,8 @@ object FromKafkaSinkJdbcForUser {
       """
         |
         |insert into user_mysql
-        |select * from `user`
+        |select uid,sex,age,created_time
+        |from `user`
         |
         |""".stripMargin)
 

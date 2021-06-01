@@ -146,8 +146,6 @@ object RoomUserTopN {
         |""".stripMargin)
 
 
-    streamExecutionEnv.execute()
-
   }
 
 }

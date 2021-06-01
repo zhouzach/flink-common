@@ -1,5 +1,9 @@
 package org.rabbit.sql
 
+import org.apache.flink.contrib.streaming.state.RocksDBStateBackend
+import org.apache.flink.streaming.api.TimeCharacteristic
+import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
+import org.apache.flink.table.api.bridge.scala.StreamTableEnvironment
 import org.apache.flink.table.api.{EnvironmentSettings, TableEnvironment}
 
 /**
@@ -9,10 +13,17 @@ object FromJdbcSinkJdbc {
 
   def main(args: Array[String]): Unit = {
 
-    val settings = EnvironmentSettings.newInstance().useBlinkPlanner().inStreamingMode().build()
-    val tableEnv = TableEnvironment.create(settings)
+    val streamExecutionEnv = StreamExecutionEnvironment.getExecutionEnvironment
+    streamExecutionEnv.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
+    //    streamExecutionEnv.enableCheckpointing(20 * 1000, CheckpointingMode.EXACTLY_ONCE)
+    //    streamExecutionEnv.getCheckpointConfig.setCheckpointTimeout(900 * 1000)
+//    streamExecutionEnv.setStateBackend(new RocksDBStateBackend("hdfs://nameservice1/flink/checkpoints"))
 
-    tableEnv.sqlUpdate(
+    val blinkEnvSettings = EnvironmentSettings.newInstance().useBlinkPlanner().inStreamingMode().build()
+    val streamTableEnv = StreamTableEnvironment.create(streamExecutionEnv, blinkEnvSettings)
+
+
+    streamTableEnv.executeSql(
       """
         |
         |CREATE TABLE analysis (
@@ -28,7 +39,7 @@ object FromJdbcSinkJdbc {
         |)
         |""".stripMargin)
 
-    tableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
         |
         |CREATE TABLE analysis1 (
@@ -45,16 +56,16 @@ object FromJdbcSinkJdbc {
         |""".stripMargin)
 
 
-    tableEnv.sqlUpdate(
+    streamTableEnv.executeSql(
       """
         |
-        |insert into analysis1
-        |select * from analysis
+        |insert into analysis
+        |select * from analysis1
         |
         |""".stripMargin)
 
 
-    tableEnv.execute("sink mysql")
+//    streamTableEnv.execute("sink mysql")
   }
 
 }

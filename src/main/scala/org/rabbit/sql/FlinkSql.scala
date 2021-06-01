@@ -35,7 +35,10 @@ object FlinkSql {
     streamTableEnv.executeSql(
       """
         |select
-        |UNIX_TIMESTAMP('2020-07-16 13:39:06.454')
+        |SUBSTR(DATE_FORMAT(TO_TIMESTAMP('2020-07-16 13:39:06.454'), 'HH:mm'),1,5) as hour_min
+        |,SUBSTR(DATE_FORMAT(TO_TIMESTAMP('2020-07-16 13:39:06.454'), 'HH:mm'),1,4)
+        |,SUBSTR(DATE_FORMAT(TO_TIMESTAMP('2020-07-16 13:39:06.454'), 'HH:mm'),1,4) || '0' as every_10
+        |,UNIX_TIMESTAMP('2020-07-16 13:39:06.454') as ut
         |,TO_TIMESTAMP('2020-07-16 13:39:06.454') as Timestamp1
         |-- ,TO_TIMESTAMP('2020-07-23T19:53:15.509Z') as Timestamp2  -- 错误的时间字符串
         |,Timestamp '2020-07-16 13:39:06.454' as Timestamp3

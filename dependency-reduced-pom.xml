@@ -137,37 +137,44 @@
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-scala_2.11</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-streaming-scala_2.11</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-clients_2.11</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-table-common</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-table-api-scala-bridge_2.11</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-table-planner-blink_2.11</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-sql-connector-hive-2.2.0_2.11</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.hive</groupId>
@@ -183,77 +190,155 @@
               <artifactId>commons-compiler</artifactId>
               <groupId>org.codehaus.janino</groupId>
             </exclusion>
+            <exclusion>
+              <artifactId>hive-ant</artifactId>
+              <groupId>org.apache.hive</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>hive-llap-tez</artifactId>
+              <groupId>org.apache.hive</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>hive-shims</artifactId>
+              <groupId>org.apache.hive</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>commons-httpclient</artifactId>
+              <groupId>commons-httpclient</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>log4j-1.2-api</artifactId>
+              <groupId>org.apache.logging.log4j</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>log4j-slf4j-impl</artifactId>
+              <groupId>org.apache.logging.log4j</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>antlr-runtime</artifactId>
+              <groupId>org.antlr</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>ST4</artifactId>
+              <groupId>org.antlr</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>ant</artifactId>
+              <groupId>org.apache.ant</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>ivy</artifactId>
+              <groupId>org.apache.ivy</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>apache-curator</artifactId>
+              <groupId>org.apache.curator</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>groovy-all</artifactId>
+              <groupId>org.codehaus.groovy</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>datanucleus-core</artifactId>
+              <groupId>org.datanucleus</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>calcite-core</artifactId>
+              <groupId>org.apache.calcite</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>calcite-avatica</artifactId>
+              <groupId>org.apache.calcite</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>stax-api</artifactId>
+              <groupId>stax</groupId>
+            </exclusion>
           </exclusions>
         </dependency>
         <dependency>
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-client</artifactId>
-          <version>3.0.0-cdh6.3.2</version>
+          <version>3.0.0</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-common</artifactId>
-          <version>3.0.0-cdh6.3.2</version>
+          <version>3.0.0</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-hdfs</artifactId>
-          <version>3.0.0-cdh6.3.2</version>
+          <version>3.0.0</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-mapreduce-client-core</artifactId>
-          <version>3.0.0-cdh6.3.2</version>
+          <version>3.0.0</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-connector-jdbc_2.11</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-sql-connector-kafka_2.11</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-connector-kafka_2.11</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-avro</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-csv</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-json</artifactId>
-          <version>${flink.version}</version>
+          <version>1.11.1</version>
+          <scope>compile</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.flink</groupId>
+          <artifactId>flink-statebackend-rocksdb_2.11</artifactId>
+          <version>1.11.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.bahir</groupId>
           <artifactId>flink-connector-redis_2.11</artifactId>
           <version>1.0</version>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.flink</groupId>
-          <artifactId>flink-connector-hive_2.11</artifactId>
-          <version>${flink.version}</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-connector-hbase_2.11</artifactId>
           <version>1.11-SNAPSHOT</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.hbase</groupId>
           <artifactId>hbase-client</artifactId>
           <version>2.1.0</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.projectlombok</groupId>
@@ -265,6 +350,7 @@
           <groupId>mysql</groupId>
           <artifactId>mysql-connector-java</artifactId>
           <version>5.1.46</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.slf4j</groupId>
@@ -282,36 +368,43 @@
           <groupId>com.alibaba</groupId>
           <artifactId>fastjson</artifactId>
           <version>1.2.68</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>com.jayway.jsonpath</groupId>
           <artifactId>json-path</artifactId>
           <version>2.4.0</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>io.lettuce</groupId>
           <artifactId>lettuce-core</artifactId>
           <version>5.3.1.RELEASE</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>
           <version>4.13</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>io.vertx</groupId>
           <artifactId>vertx-core</artifactId>
           <version>3.9.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>io.vertx</groupId>
           <artifactId>vertx-jdbc-client</artifactId>
           <version>3.9.1</version>
+          <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.commons</groupId>
           <artifactId>commons-email</artifactId>
           <version>1.5</version>
+          <scope>compile</scope>
         </dependency>
       </dependencies>
     </profile>
@@ -337,24 +430,6 @@
     </repository>
   </repositories>
   <dependencies>
-    <dependency>
-      <groupId>org.apache.bahir</groupId>
-      <artifactId>flink-connector-redis_2.11</artifactId>
-      <version>1.0</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>jedis</artifactId>
-          <groupId>redis.clients</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-sql-connector-hive-2.2.0_2.11</artifactId>
-      <version>1.11.0</version>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-exec</artifactId>
@@ -430,10 +505,6 @@
           <groupId>org.apache.calcite</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>gson</artifactId>
-          <groupId>com.google.code.gson</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>stax-api</artifactId>
           <groupId>stax</groupId>
         </exclusion>
@@ -447,13 +518,15 @@
     </dependency>
   </dependencies>
   <properties>
-    <scala.version>2.11.12</scala.version>
+    <flink.version>1.11.1</flink.version>
     <java.version>1.8</java.version>
-    <scala.binary.version>2.11</scala.binary.version>
-    <flink.version>1.11.0</flink.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>${java.version}</maven.compiler.target>
+    <scala.binary.version>2.11</scala.binary.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <hadoop.version>3.0.0</hadoop.version>
+    <scala.version>2.11.12</scala.version>
+    <phoenix.version>5.0.0-cdh6.2.0</phoenix.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
   </properties>
 </project>
 

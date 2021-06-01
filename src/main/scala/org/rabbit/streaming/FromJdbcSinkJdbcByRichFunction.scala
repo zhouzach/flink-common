@@ -18,8 +18,8 @@ object FromJdbcSinkJdbc {
 
 
     val deploy = "dev"
-    val sourcSql = "select srcuid,price,id from orders"
-    val sinkSql = "INSERT INTO orders_copy (srcuid, price, id) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE id=id+?"
+    val sourcSql = "select id,price,cnt from orders"
+    val sinkSql = "INSERT INTO orders_copy (id, price, cnt) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE cnt=cnt+?"
     val dataStream = env.addSource(new DataJdbcRichSource(deploy, sourcSql))
     dataStream.print()
     dataStream.addSink(new OrderJdbcRichSink(deploy, sinkSql)) //写入mysql
@@ -37,10 +37,10 @@ class DataJdbcRichSource(deploy: String, sql: String) extends JdbcRichSource[Ord
     Try {
       val resultSet = stmt.executeQuery()
       while (resultSet.next()) {
-        val srcuid = resultSet.getLong("srcuid");
+        val id = resultSet.getLong("id");
         val price = resultSet.getLong("price");
-        val id = resultSet.getInt("id");
-        ctx.collect(OrderInfo(srcuid, price, id))//发送结果，结果是tuple2类型，2表示两个元素，可根据实际情况选择
+        val cnt = resultSet.getInt("cnt");
+        ctx.collect(OrderInfo(id, price, cnt))
       }
 
     } match {
@@ -64,11 +64,11 @@ class OrderJdbcRichSink(deploy: String, sql: String) extends JdbcRichSink[OrderI
   override def invoke(orderInfo: OrderInfo, context: Context[_]): Unit = {
     try {
       //4.组装数据，执行插入操作
-      stmt.setLong(1, orderInfo.srcuid)
+      stmt.setLong(1, orderInfo.id)
       stmt.setLong(2, orderInfo.price)
-      stmt.setInt(3, orderInfo.id)
+      stmt.setInt(3, orderInfo.cnt)
 
-      stmt.setInt(4, orderInfo.id)
+      stmt.setInt(4, orderInfo.cnt)
       stmt.executeUpdate()
 
     } catch {
@@ -78,4 +78,4 @@ class OrderJdbcRichSink(deploy: String, sql: String) extends JdbcRichSink[OrderI
 
 }
 
-case class OrderInfo(srcuid: Long,price: Long, id:Int)
+case class OrderInfo(id: Long, price: Long, cnt:Int)

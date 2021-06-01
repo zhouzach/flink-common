@@ -19,7 +19,13 @@ object FileConfig {
 
   //library or custom config
 
-  val devDataSource: Config = combinedConfig.getConfig("dev.dataSource")
+  val devConfig: Config = combinedConfig.getConfig("dev")
+  val devDataSource: Config = devConfig.getConfig("dataSource")
+  val devPhoenix: Config = devConfig.getConfig("phoenix")
+
+  val cdhConfig: Config = devConfig.getConfig("cdh")
+  val cdhDataSource: Config = cdhConfig.getConfig("dataSource")
+
   val prodDataSource: Config = combinedConfig.getConfig("prod.dataSource")
 
   val emailConfig: Config = combinedConfig.getConfig("email")
