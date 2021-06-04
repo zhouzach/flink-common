@@ -1,6 +1,7 @@
 
 src/main/resources
 src/test/resources
+push.sh
 
 
 target/
