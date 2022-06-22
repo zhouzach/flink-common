@@ -124,7 +124,7 @@ under the License.
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
-            <version>7.13.0</version>
+            <version>7.13.4</version>
         </dependency>
         <!-- es sink StatusLogger  -->
         <dependency>
