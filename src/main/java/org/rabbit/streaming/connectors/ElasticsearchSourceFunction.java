@@ -17,12 +17,12 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-import org.rabbit.models.Record;
+import org.rabbit.models.Record1;
 
 import java.io.IOException;
 
 
-public class ElasticsearchSourceFunction extends RichSourceFunction<Record> {
+public class ElasticsearchSourceFunction extends RichSourceFunction<Record1> {
     RestHighLevelClient client;
 
     @Override
@@ -36,7 +36,7 @@ public class ElasticsearchSourceFunction extends RichSourceFunction<Record> {
     }
 
     @Override
-    public void run(SourceContext<Record> context) throws Exception {
+    public void run(SourceContext<Record1> context) throws Exception {
 
         MultiSearchRequest request = new MultiSearchRequest();
         SearchRequest firstSearchRequest = new SearchRequest("log3");
@@ -73,7 +73,7 @@ public class ElasticsearchSourceFunction extends RichSourceFunction<Record> {
                     String sourceAsString = hit.getSourceAsString();
                     if (sourceAsString != null) {
                         ObjectMapper mapper = new ObjectMapper();
-                        Record obj = mapper.readValue(sourceAsString, Record.class);
+                        Record1 obj = mapper.readValue(sourceAsString, Record1.class);
                         context.collect(obj);
                     }
                 }

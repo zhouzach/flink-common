@@ -13,7 +13,7 @@ import org.elasticsearch.action.ActionRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.client.{Requests, RestClientBuilder}
 import org.elasticsearch.common.util.concurrent.EsRejectedExecutionException
-import org.rabbit.models.Record
+import org.rabbit.models.Record1
 
 object ElasticsearchSinkDemo {
   val streamExecutionEnv = StreamExecutionEnvironment.getExecutionEnvironment
@@ -22,7 +22,7 @@ object ElasticsearchSinkDemo {
 
   import org.apache.flink.api.scala._
   val sourceStream= streamExecutionEnv
-    .fromElements(Record("a",1),Record("b",2))
+    .fromElements(Record1("a",1),Record1("b",2))
 //    .fromElements(("apple"), ("banana") ,("banana"))
     .name("fromElements").uid("fromElements")
 
@@ -33,7 +33,7 @@ object ElasticsearchSinkDemo {
     httpHosts.add(new HttpHost("127.0.0.1", 9201, "http"))
     httpHosts.add(new HttpHost("127.0.0.1", 9202, "http"))
 
-    val esSinkBuilder = new ElasticsearchSink.Builder[Record](
+    val esSinkBuilder = new ElasticsearchSink.Builder[Record1](
       httpHosts,
       indexSinkFunction()
     )
@@ -81,8 +81,8 @@ object ElasticsearchSinkDemo {
 
 
   def indexSinkFunction() ={
-    new ElasticsearchSinkFunction[Record] {
-      def process(element: Record, ctx: RuntimeContext, indexer: RequestIndexer) {
+    new ElasticsearchSinkFunction[Record1] {
+      def process(element: Record1, ctx: RuntimeContext, indexer: RequestIndexer) {
         val json = new java.util.HashMap[String, Any]
         json.put("field1", element.field1)
         json.put("field2", element.field2)

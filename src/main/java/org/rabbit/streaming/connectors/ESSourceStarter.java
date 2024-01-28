@@ -2,7 +2,6 @@ package org.rabbit.streaming.connectors;
 
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.rabbit.models.Record;
 
 public class ESSourceStarter {
     public static void main(String[] args) throws Exception {

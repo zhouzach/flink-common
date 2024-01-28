@@ -17,7 +17,7 @@ import org.apache.flink.streaming.connectors.redis.common.mapper.{RedisCommand, 
 import org.apache.flink.table.api.bridge.scala.StreamTableEnvironment
 import org.apache.flink.table.api.{EnvironmentSettings, TableEnvironment}
 import org.rabbit.config.DevDbConfig
-import org.rabbit.models.{BehaviorData, Record}
+import org.rabbit.models.{BehaviorData, Record1}
 
 /**
  * https://cloud.tencent.com/developer/article/1536148

@@ -14,16 +14,15 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-import org.rabbit.models.Record;
+import org.rabbit.models.Record1;
 
 import java.io.IOException;
 
 
-public class ElasticsearchSourceScrollFunction extends RichSourceFunction<Record> {
+public class ElasticsearchSourceScrollFunction extends RichSourceFunction<Record1> {
     RestHighLevelClient client;
 
     @Override
@@ -37,7 +36,7 @@ public class ElasticsearchSourceScrollFunction extends RichSourceFunction<Record
     }
 
     @Override
-    public void run(SourceContext<Record> context) throws Exception {
+    public void run(SourceContext<Record1> context) throws Exception {
 
         final Scroll scroll = new Scroll(TimeValue.timeValueMinutes(1L));
         SearchRequest searchRequest = new SearchRequest("log3");
@@ -68,7 +67,7 @@ public class ElasticsearchSourceScrollFunction extends RichSourceFunction<Record
             String sourceAsString = hit.getSourceAsString();
             if (sourceAsString != null) {
                 ObjectMapper mapper = new ObjectMapper();
-                Record obj = mapper.readValue(sourceAsString, Record.class);
+                Record1 obj = mapper.readValue(sourceAsString, Record1.class);
                 context.collect(obj);
             }
         }
@@ -87,7 +86,7 @@ public class ElasticsearchSourceScrollFunction extends RichSourceFunction<Record
                 String sourceAsString = hit.getSourceAsString();
                 if (sourceAsString != null) {
                     ObjectMapper mapper = new ObjectMapper();
-                    Record obj = mapper.readValue(sourceAsString, Record.class);
+                    Record1 obj = mapper.readValue(sourceAsString, Record1.class);
                     System.out.println(sourceAsString);
                     context.collect(obj);
                 }
